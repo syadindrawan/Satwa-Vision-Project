@@ -125,8 +125,6 @@ Cara paling praktis: pakai `train_colab.ipynb` di [Google Colab](https://colab.r
 
 Untuk training di komputer sendiri, pakai `python train.py` (butuh `pip install -r requirements.txt`).
 
-Detail lengkap (struktur dataset, arsitektur, hyperparameter) ada di [SETUP.md](SETUP.md).
-
 ## Dokumentasi API
 
 ### `GET /health`
