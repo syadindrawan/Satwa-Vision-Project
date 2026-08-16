@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Satwa Vision - Klasifikasi Citra 10 Spesies</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="{{ url_for('static', filename='favicon.svg') }}"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style/style.css') }}"
+    />
+  </head>
+  <body class="antialiased">
+
+    <!--  NAVBAR START -->
+    <header
+      class="sticky top-0 z-50 bg-(--paper)/90 backdrop-blur border-b border-(--line)"
+    >
+      <div
+        class="max-w-6xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between"
+      >
+        <a
+          href="#beranda"
+          class="font-display text-lg md:text-xl tracking-tight"
+          style="color: var(--forest)"
+        >
+          Satwa<span style="color: var(--rust)">Vision</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+          <a href="#beranda" class="nav-link">Beranda</a>
+          <a href="#tentang" class="nav-link">Tentang</a>
+          <a href="#teknologi" class="nav-link">Teknologi</a>
+          <a href="#fitur" class="nav-link">Fitur</a>
+          <a
+            href="#coba-sekarang"
+            class="px-4 py-2 rounded-full text-white text-sm"
+            style="background: var(--rust)"
+            >Coba Sekarang</a
+          >
+        </nav>
+        <button
+          id="menuBtn"
+          class="md:hidden w-9 h-9 flex flex-col justify-center items-center gap-1.5"
+        >
+          <span class="w-6 h-0.5 bg-(--ink)"></span>
+          <span class="w-6 h-0.5 bg-(--ink)"></span>
+          <span class="w-6 h-0.5 bg-(--ink)"></span>
+        </button>
+      </div>
+      <div
+        id="mobileMenu"
+        class="mobile-menu md:hidden overflow-hidden max-h-0 border-t border-(--line)"
+      >
+        <div class="flex flex-col px-5 py-4 gap-4 text-sm font-medium">
+          <a href="#beranda" class="nav-link">Beranda</a>
+          <a href="#tentang" class="nav-link">Tentang</a>
+          <a href="#teknologi" class="nav-link">Teknologi</a>
+          <a href="#fitur" class="nav-link">Fitur</a>
+          <a href="#coba-sekarang" class="nav-link">Coba Sekarang</a>
+        </div>
+      </div>
+    </header>
+    <!--  NAVBAR END -->
+
+    <!--  BERANDA START -->
+    <section id="beranda" class="relative overflow-hidden">
+      <div class="max-w-6xl mx-auto px-5 md:px-8 pt-16 pb-20 md:pt-24 md:pb-28">
+        <div class="grid md:grid-cols-12 gap-10 items-end">
+          <div class="md:col-span-7">
+            <p class="tag-index uppercase mb-4" style="color: var(--rust)"
+              >Katalog Spesimen · Computer Vision</p
+            >
+            <h1
+              class="font-display text-4xl sm:text-5xl md:text-6xl leading-[1.05]"
+              style="color: var(--forest)"
+            >
+              Satu foto,<br />
+              sepuluh kemungkinan spesies.
+            </h1>
+            <p class="mt-6 text-base md:text-lg text-(--ink)/75 max-w-lg">
+              SatwaVision mengenali sepuluh kelas hewan - anjing, ayam, domba,
+              gajah, kucing, kuda, kupu-kupu, laba-laba, sapi, dan tupai -
+              dengan model deep learning hasil fine-tuning pretrained
+              MobileNetV2.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a
+                href="#coba-sekarang"
+                class="px-6 py-3 rounded-full text-white font-semibold text-sm"
+                style="background: var(--forest)"
+                >Coba klasifikasikan gambar →</a
+              >
+              <a
+                href="#teknologi"
+                class="px-6 py-3 rounded-full font-semibold text-sm border"
+                style="border-color: var(--line)"
+                >Lihat cara kerjanya</a
+              >
+            </div>
+          </div>
+          <div
+            class="md:col-span-5 font-mono text-xs"
+            style="color: var(--ink) / 60"
+          >
+            <div class="paper-card rounded-2xl p-5">
+              <p class="tag-index" style="color: var(--forest)">MODEL SPEC</p>
+              <div class="mt-3 space-y-2 text-[13px]">
+                <div class="flex justify-between border-b border-(--line) pb-2"
+                  ><span>Backbone</span><span>MobileNetV2</span></div
+                >
+                <div class="flex justify-between border-b border-(--line) pb-2"
+                  ><span>Input</span><span>224×224×3</span></div
+                >
+                <div class="flex justify-between border-b border-(--line) pb-2"
+                  ><span>Kelas</span><span>10</span></div
+                >
+                <div class="flex justify-between"
+                  ><span>Runtime</span><span>Flask (Python)</span></div
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- specimen grid -->
+        <div class="mt-16 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        </div>
+      </div>
+    </section>
+    <!-- BERANDA END -->
+
+    <!--  TENTANG START -->
+    <section
+      id="tentang"
+      class="border-t border-(--line)"
+      style="background: var(--forest); color: var(--paper)"
+    >
+      <div
+        class="max-w-6xl mx-auto px-5 md:px-8 py-20 md:py-28 grid md:grid-cols-12 gap-12"
+      >
+        <div class="md:col-span-5">
+          <p class="tag-index uppercase mb-4" style="color: var(--gold)"
+            >Tentang Proyek</p
+          >
+          <h2 class="font-display text-3xl md:text-4xl leading-tight"
+            >Dibangun sebagai studi kasus transfer learning yang ringkas.</h2
+          >
+        </div>
+        <div class="md:col-span-7 space-y-6 text-(--paper)/80 leading-relaxed">
+          <p>
+            SatwaVision lahir dari pertanyaan sederhana: seberapa akurat model
+            yang sudah dilatih pada jutaan gambar umum (ImageNet) bila diarahkan
+            ulang untuk mengenali sepuluh spesies spesifik? Proyek ini
+            membandingkan foto anjing, ayam, domba, gajah, kucing, kuda,
+            kupu-kupu, laba-laba, sapi, dan tupai, lalu menyaring karakter
+            visual yang membedakan tiap kelas - bentuk telinga, sayap, corak
+            bulu, hingga jumlah kaki.
+          </p>
+          <p>
+            Model ini menggunakan MobileNetV2 sebagai fondasi, dengan bobot dari
+            ImageNet yang sudah di - pretrained sebelumnya, kemudian
+            di finetuning pada dataset sepuluh kelas ini melalui dua tahap
+            pelatihan bertingkat.
+          </p>
+          <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/15">
+            <div
+              ><p class="font-display text-3xl" style="color: var(--gold)">10</p
+              ><p class="text-xs mt-1 text-(--paper)/60">Kelas hewan</p></div
+            >
+            <div
+              ><p class="font-display text-3xl" style="color: var(--gold)">2</p
+              ><p class="text-xs mt-1 text-(--paper)/60"
+                >Tahap pelatihan</p
+              ></div
+            >
+            <div
+              ><p class="font-display text-3xl" style="color: var(--gold)"
+                >97%</p
+              ><p class="text-xs mt-1 text-(--paper)/60"
+                >Akurasi validasi</p
+              ></div
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- TENTANG END -->
+
+    <!--  TEKNOLOGI START -->
+    <section id="teknologi" class="border-t border-(--line)">
+      <div class="max-w-6xl mx-auto px-5 md:px-8 py-20 md:py-28">
+        <p class="tag-index uppercase mb-4" style="color: var(--rust)"
+          >Cara Kerja</p
+        >
+        <h2
+          class="font-display text-3xl md:text-4xl mb-12 max-w-xl"
+          style="color: var(--forest)"
+          >Empat lapis proses, dari piksel sampai prediksi.</h2
+        >
+
+        <div class="grid md:grid-cols-4 gap-5">
+          <div class="paper-card rounded-2xl p-6">
+            <p class="tag-index" style="color: var(--rust)">01 · INPUT</p>
+            <h3
+              class="font-display text-xl mt-3 mb-2"
+              style="color: var(--forest)"
+              >Upload ke server</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Foto dikirim dari browser ke server menggunakan Flask.</p
+            >
+          </div>
+          <div class="paper-card rounded-2xl p-6">
+            <p class="tag-index" style="color: var(--rust)">02 · PRAPROSES</p>
+            <h3
+              class="font-display text-xl mt-3 mb-2"
+              style="color: var(--forest)"
+              >Resize & normalisasi</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Gambar diubah ke 224 x 224px agar sesuai dengan skala MobileNetV2
+              yang sudah dibangun di dalam model.</p
+            >
+          </div>
+          <div class="paper-card rounded-2xl p-6">
+            <p class="tag-index" style="color: var(--rust)">03 · FINE-TUNING</p>
+            <h3
+              class="font-display text-xl mt-3 mb-2"
+              style="color: var(--forest)"
+              >MobileNetV2 fine-tuned</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Backbone pretrained ImageNet, dilatih ulang dua tahap khusus
+              untuk sepuluh kelas hewan ini.</p
+            >
+          </div>
+          <div class="paper-card rounded-2xl p-6">
+            <p class="tag-index" style="color: var(--rust)">04 · RUNTIME</p>
+            <h3
+              class="font-display text-xl mt-3 mb-2"
+              style="color: var(--forest)"
+              >Inference di server</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Model dijalankan oleh Flask, Lalu menghasilakan
+              prediksi.</p
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- TEKNOLOGI END -->
+
+    <!--  FITUR START -->
+    <section
+      id="fitur"
+      class="border-t border-(--line)"
+      style="background: var(--paper-dim)"
+    >
+      <div class="max-w-6xl mx-auto px-5 md:px-8 py-20 md:py-28">
+        <p class="tag-index uppercase mb-4" style="color: var(--teal)">Fitur</p>
+        <h2
+          class="font-display text-3xl md:text-4xl mb-12 max-w-xl"
+          style="color: var(--forest)"
+          >Dirancang untuk dicoba, bukan sekadar dibaca.</h2
+        >
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+          <div class="paper-card rounded-2xl p-6">
+            <h3 class="font-display text-lg mb-2" style="color: var(--forest)"
+              >Unggah drag &amp; drop</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Seret foto langsung ke area unggah, atau pilih dari galeri
+              perangkat.</p
+            >
+          </div>
+          <div class="paper-card rounded-2xl p-6">
+            <h3 class="font-display text-lg mb-2" style="color: var(--forest)"
+              >Server terpusat</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Prediksi dijalankan di satu server, jadi performa konsisten di
+              perangkat manapun tanpa bergantung spesifikasi HP/laptop
+              pengguna.</p
+            >
+          </div>
+          <div class="paper-card rounded-2xl p-6">
+            <h3 class="font-display text-lg mb-2" style="color: var(--forest)"
+              >Rincian keyakinan</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Melihat persentase keyakinan model untuk seluruh sepuluh kelas,
+              bukan cuma satu tebakan.</p
+            >
+          </div>
+          <div class="paper-card rounded-2xl p-6">
+            <h3 class="font-display text-lg mb-2" style="color: var(--forest)"
+              >API JSON</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Mengembalikan data dalam format JSON, mudah dipakai
+              ulang oleh aplikasi lain selain landing page ini.</p
+            >
+          </div>
+          <div class="paper-card rounded-2xl p-6">
+            <h3 class="font-display text-lg mb-2" style="color: var(--forest)"
+              >Sepuluh spesies</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Mengenali anjing, ayam, domba, gajah, kucing, kuda, kupu-kupu,
+              laba-laba, sapi, dan tupai dari satu model yang sama.</p
+            >
+          </div>
+          <div class="paper-card rounded-2xl p-6">
+            <h3 class="font-display text-lg mb-2" style="color: var(--forest)"
+              >Responsif penuh</h3
+            >
+            <p class="text-sm text-(--ink)/70"
+              >Tata letak menyesuaikan dari layar ponsel, tablet, hingga desktop
+              lebar.</p
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FITUR END -->
+
+    <!--  COBA SEKARANG START -->
+    <section id="coba-sekarang" class="border-t border-(--line)">
+      <div class="max-w-6xl mx-auto px-5 md:px-8 py-20 md:py-28">
+        <p class="tag-index uppercase mb-4" style="color: var(--rust)"
+          >Coba Sekarang</p
+        >
+        <h2
+          class="font-display text-3xl md:text-4xl mb-3"
+          style="color: var(--forest)"
+          >Taruh spesimen Anda di bawah loupe.</h2
+        >
+        <p id="modelStatus" class="text-sm text-(--ink)/60 mb-10 font-mono"
+          >Menghubungi server…</p
+        >
+
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+          <!-- Upload zone -->
+          <div>
+            <div
+              id="dropZone"
+              class="drop-zone rounded-2xl p-8 text-center cursor-pointer relative overflow-hidden bg-white"
+            >
+              <input
+                type="file"
+                id="fileInput"
+                accept="image/*"
+                class="hidden"
+              />
+              <div id="dropContent">
+                <div
+                  class="w-14 h-14 mx-auto rounded-full flex items-center justify-center mb-4"
+                  style="background: var(--paper-dim)"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="var(--forest)"
+                    stroke-width="1.6"
+                  >
+                    <path
+                      d="M12 16V4M12 4l-4 4M12 4l4 4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+                <p class="font-medium text-sm" style="color: var(--forest)"
+                  >Seret gambar ke sini, atau klik untuk memilih</p
+                >
+                <p class="text-xs mt-1 text-(--ink)/50"
+                  >JPG atau PNG, satu objek per foto</p
+                >
+              </div>
+              <img
+                id="previewImg"
+                class="hidden mx-auto max-h-72 rounded-lg object-contain"
+                alt="Preview"
+              />
+              <div id="scanOverlay" class="hidden absolute inset-0"
+                ><div class="scan-line"></div
+              ></div>
+            </div>
+            <div class="mt-4 flex gap-3">
+              <button
+                id="classifyBtn"
+                disabled
+                class="px-6 py-3 rounded-full text-white font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                style="background: var(--forest)"
+                >Klasifikasikan</button
+              >
+              <button
+                id="resetBtn"
+                class="hidden px-6 py-3 rounded-full font-semibold text-sm border"
+                style="border-color: var(--line)"
+                >Coba foto lain</button
+              >
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div class="paper-card rounded-2xl p-6 min-h-70" id="resultsCard">
+            <p class="tag-index" style="color: var(--rust)"
+              >HASIL KLASIFIKASI</p
+            >
+            <div id="emptyState" class="mt-8 text-sm text-(--ink)/50 font-mono">
+              Belum ada gambar dianalisis. Hasil akan muncul di sini.
+            </div>
+            <div id="resultState" class="hidden mt-4">
+              <div class="flex items-baseline justify-between mb-6">
+                <h3
+                  id="predictedLabel"
+                  class="font-display text-3xl"
+                  style="color: var(--forest)"
+                  >—</h3
+                >
+                <span
+                  id="predictedConf"
+                  class="font-mono text-sm"
+                  style="color: var(--rust)"
+                  >—</span
+                >
+              </div>
+              <div id="barsWrap" class="space-y-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- COBA SEKARANG END -->
+
+    <footer class="border-t border-(--line) py-8">
+      <div
+        class="max-w-6xl mx-auto px-5 md:px-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-(--ink)/50 font-mono"
+      >
+        <span>SatwaVision - proyek klasifikasi citra 10 kelas hewan</span>
+        <span>MobileNetV2 . Flask </span>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='javascripts/app.js') }}"></script>
+  </body>
+</html>

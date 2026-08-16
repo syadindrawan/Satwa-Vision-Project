@@ -1,0 +1,14 @@
+{
+  "name": "satwavision-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build Tailwind CSS v4 untuk production (tanpa CDN) untuk landing page SatwaVision",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./static/style/input.css -o ./static/style/style.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./static/style/input.css -o ./static/style/style.css --watch"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

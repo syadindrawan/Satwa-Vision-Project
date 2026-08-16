@@ -1,0 +1,122 @@
+@import "tailwindcss";
+@source "../../templates/**/*.html";
+@source "../../index.html";
+@source "../js/**/*.js";
+
+:root {
+  --ink: #1b211d;
+  --paper: #eceee4;
+  --paper-dim: #e1e4d6;
+  --forest: #16241f;
+  --forest-2: #223530;
+  --rust: #c1552b;
+  --gold: #d1a039;
+  --teal: #2e6e64;
+  --line: rgba(27, 33, 29, 0.14);
+}
+* {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Manrope", sans-serif;
+}
+.font-display {
+  font-family: "Fraunces", serif;
+}
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+.paper-card {
+  background: #fff;
+  border: 1px solid var(--line);
+}
+.tag-index {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+.nav-link {
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--rust);
+  transition: width 0.25s ease;
+}
+.nav-link.active::after,
+.nav-link:hover::after {
+  width: 100%;
+}
+.specimen-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.specimen-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 30px -14px rgba(27, 33, 29, 0.35);
+}
+.specimen-emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+.specimen-emoji img {
+  width: 1em;
+  height: 1em;
+  margin: 0 auto;
+} /* target Twemoji's injected <img> */
+.drop-zone {
+  border: 2px dashed var(--line);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.drop-zone.dragover {
+  border-color: var(--rust);
+  background: rgba(193, 85, 43, 0.06);
+}
+.scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--rust), transparent);
+  animation: scan 1.6s linear infinite;
+}
+@keyframes scan {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 100%;
+  }
+}
+.bar-track {
+  background: var(--paper-dim);
+}
+.bar-fill {
+  background: var(--forest);
+  transition: width 0.6s ease;
+}
+.mobile-menu {
+  transition: max-height 0.3s ease;
+}
+::selection {
+  background: var(--gold);
+  color: var(--forest);
+}
+.stitch {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--line) 0 6px,
+    transparent 6px 14px
+  );
+}
