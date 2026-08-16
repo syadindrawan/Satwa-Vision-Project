@@ -13,7 +13,7 @@ MODEL_PATH = os.path.join("model", "animal_classifier1.keras")
 CLASS_PATH = os.path.join("model", "class_indices.json")
 IMG_SIZE = (224, 224)
 ALLOWED_EXT = {"png", "jpg", "jpeg", "webp"}
-CONFIDENCE_THRESHOLD = 0.7 # Digunakan untuk membatasi kasus klasifikasi 
+CONFIDENCE_THRESHOLD = 0.6 # Digunakan untuk membatasi kasus klasifikasi 
 #diluar data yang dilatih ,but ga terlalu work. 
 
 # Load model & label sekali saat server start
