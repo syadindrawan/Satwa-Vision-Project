@@ -10,8 +10,13 @@
 # Di sini kita cuma menambahkan Node.js (untuk build Tailwind CSS) di
 # atas auto-detect Python itu, tanpa mengganggu proses pip-nya sama sekali.
 
+# PENTING: [phases.setup] di bawah ini MENIMPA daftar paket sistem
+# bawaan Nixpacks, bukan menambah. Makanya "python3" wajib disebut
+# eksplisit di sini juga — kalau tidak, dia hilang dari image final
+# walau auto-detector masih sempat menjalankan pip install saat build.
+
 [phases.setup]
-nixPkgs = ["nodejs_20"]
+nixPkgs = ["python310", "nodejs_20"]
 
 [phases.build]
 cmds = [
