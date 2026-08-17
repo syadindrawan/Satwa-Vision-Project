@@ -2,22 +2,24 @@
 # Konfigurasi eksplisit untuk Railway (Nixpacks), karena project ini
 # campuran Python (Flask/TensorFlow) + Node.js (Tailwind CLI build).
 #
-# CATATAN: `pip` tidak otomatis ada di PATH hanya dengan menambahkan
-# paket "python310" — makanya kemarin muncul "pip: command not found".
-# Solusinya: selalu panggil lewat "python3 -m pip" (bukan "pip" polos),
-# itu dijamin ada selama python3-nya sendiri ada.
+# CATATAN PENTING soal pip di lingkungan Nix:
+# - JANGAN pakai `ensurepip` — itu mencoba menulis ke /nix/store yang
+#   immutable, dan akan selalu gagal ("externally-managed-environment").
+# - Solusinya: minta Nix menyediakan `pip` langsung sebagai paket jadi
+#   (python310Packages.pip), lalu pakai flag --break-system-packages
+#   saat pip install (aman di sini karena ini environment build sekali
+#   pakai, bukan OS asli yang perlu dilindungi).
 #
 # GANTI "requirements.txt" di bawah kalau nama file kamu berbeda
 # (misalnya "requirements-backend.txt").
 
 [phases.setup]
-nixPkgs = ["python310", "nodejs_20"]
+nixPkgs = ["python310", "python310Packages.pip", "nodejs_20"]
 
 [phases.install]
 cmds = [
-  "python3 -m ensurepip --upgrade",
-  "python3 -m pip install --upgrade pip",
-  "python3 -m pip install -r requirements.txt",
+  "python3 -m pip install --break-system-packages --upgrade pip",
+  "python3 -m pip install --break-system-packages -r requirements-backend.txt",
   "npm install"
 ]
 
