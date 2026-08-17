@@ -1,33 +1,25 @@
 # nixpacks.toml
-# Konfigurasi eksplisit untuk Railway (Nixpacks), karena project ini
-# campuran Python (Flask/TensorFlow) + Node.js (Tailwind CLI build).
 #
-# CATATAN PENTING soal pip di lingkungan Nix:
-# - JANGAN pakai `ensurepip` — itu mencoba menulis ke /nix/store yang
-#   immutable, dan akan selalu gagal ("externally-managed-environment").
-# - Solusinya: minta Nix menyediakan `pip` langsung sebagai paket jadi
-#   (python310Packages.pip), lalu pakai flag --break-system-packages
-#   saat pip install (aman di sini karena ini environment build sekali
-#   pakai, bukan OS asli yang perlu dilindungi).
+# PENTING: sengaja TIDAK ada [phases.install] di sini. Biarkan Nixpacks
+# pakai Python auto-detector bawaannya (dari requirements.txt) — itu
+# sudah menyiapkan python + pip + venv dengan benar secara internal.
+# Kalau kita override manual (python310 + python310Packages.pip sebagai
+# paket terpisah), keduanya TIDAK otomatis tersambung, makanya kemarin
+# selalu muncul "No module named pip" walau paketnya sudah ada.
 #
-# GANTI "requirements.txt" di bawah kalau nama file kamu berbeda
-# (misalnya "requirements-backend.txt").
+# Di sini kita cuma menambahkan Node.js (untuk build Tailwind CSS) di
+# atas auto-detect Python itu, tanpa mengganggu proses pip-nya sama sekali.
 
 [phases.setup]
-nixPkgs = ["python310", "python310Packages.pip", "nodejs_20"]
-
-[phases.install]
-cmds = [
-  "python3 -m pip install --break-system-packages --upgrade pip",
-  "python3 -m pip install --break-system-packages -r requirements-backend.txt",
-  "npm install"
-]
+nixPkgs = ["nodejs_20"]
 
 [phases.build]
 cmds = [
+  "npm install",
   "npx tailwindcss -i ./static/style/input.css -o ./static/style/style.css --minify"
 ]
 
 [start]
 # $PORT disediakan otomatis oleh Railway saat runtime — JANGAN di-hardcode ke 5000
-cmd = "python3 -m gunicorn app:app --bind 0.0.0.0:$PORT"
+# gunicorn harus ada di requirements.txt (mis. gunicorn>=21.2)
+cmd = "gunicorn app:app --bind 0.0.0.0:$PORT"
