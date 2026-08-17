@@ -1,0 +1,24 @@
+# nixpacks.toml
+# Konfigurasi eksplisit untuk Railway (Nixpacks), karena project ini
+# campuran Python (Flask/TensorFlow) + Node.js (Tailwind CLI build).
+# Tanpa file ini, Nixpacks kadang cuma mendeteksi salah satu (biasanya
+# Node, karena ada package.json) dan melewatkan `pip install`, sehingga
+# gunicorn & dependency Python lain tidak pernah ter-install.
+
+[phases.setup]
+nixPkgs = ["python310", "nodejs_20"]
+
+[phases.install]
+cmds = [
+  "pip install -r requirements-backend.txt",
+  "npm install"
+]
+
+[phases.build]
+cmds = [
+  "npx tailwindcss -i ./static/style/input.css -o ./static/style/style.css --minify"
+]
+
+[start]
+# $PORT disediakan otomatis oleh Railway saat runtime — JANGAN di-hardcode ke 5000
+cmd = "gunicorn app:app --bind 0.0.0.0:$PORT"
