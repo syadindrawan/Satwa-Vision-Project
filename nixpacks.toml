@@ -15,6 +15,12 @@
 
 [phases.setup]
 nixPkgs = ["python310", "nodejs_20"]
+# nixLibs menambahkan shared library ke LD_LIBRARY_PATH (bukan ke PATH
+# seperti nixPkgs biasa). TensorFlow butuh libstdc++.so.6 (dari
+# stdenv.cc.cc.lib) dan libz.so.1 (dari zlib) yang TIDAK otomatis ada
+# di environment Nix — tanpa ini muncul error
+# "ImportError: libstdc++.so.6: cannot open shared object file".
+nixLibs = ["stdenv.cc.cc.lib", "zlib"]
 
 [phases.install]
 cmds = [
