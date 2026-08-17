@@ -1,35 +1,36 @@
 # nixpacks.toml
 #
-# PENTING: sengaja TIDAK ada [phases.install] di sini. Biarkan Nixpacks
-# pakai Python auto-detector bawaannya (dari requirements.txt) — itu
-# sudah menyiapkan python + pip + venv dengan benar secara internal.
-# Kalau kita override manual (python310 + python310Packages.pip sebagai
-# paket terpisah), keduanya TIDAK otomatis tersambung, makanya kemarin
-# selalu muncul "No module named pip" walau paketnya sudah ada.
+# Kenapa dibuat manual & eksplisit begini (bukan mengandalkan auto-detect
+# Nixpacks lagi): sempat terjadi mismatch antara python3 yang dipakai
+# untuk `pip install` (di-setup otomatis oleh Nixpacks) dengan python3
+# yang dipanggil di start command (python3 mentah dari nix) — dua
+# environment yang beda isi package-nya, makanya gunicorn "ketemu"
+# waktu install tapi "hilang" waktu dijalankan.
 #
-# Di sini kita cuma menambahkan Node.js (untuk build Tailwind CSS) di
-# atas auto-detect Python itu, tanpa mengganggu proses pip-nya sama sekali.
-
-# PENTING: [phases.setup] di bawah ini MENIMPA daftar paket sistem
-# bawaan Nixpacks, bukan menambah. Makanya "python3" wajib disebut
-# eksplisit di sini juga — kalau tidak, dia hilang dari image final
-# walau auto-detector masih sempat menjalankan pip install saat build.
+# Fix-nya: bikin SATU virtual environment sendiri (/opt/venv), lalu
+# install & jalankan app selalu lewat venv yang sama persis. venv juga
+# aman dari masalah "externally-managed-environment" ala Nix, karena
+# venv menulis ke folder biasa (/opt/venv), bukan ke /nix/store yang
+# immutable.
 
 [phases.setup]
 nixPkgs = ["python310", "nodejs_20"]
 
+[phases.install]
+cmds = [
+  "python3 -m venv /opt/venv",
+  "/opt/venv/bin/pip install --upgrade pip",
+  "/opt/venv/bin/pip install -r requirements.txt",
+  "npm install"
+]
+
 [phases.build]
 cmds = [
-  "npm install",
   "npx tailwindcss -i ./static/style/input.css -o ./static/style/style.css --minify"
 ]
 
 [start]
 # $PORT disediakan otomatis oleh Railway saat runtime — JANGAN di-hardcode ke 5000
-# gunicorn harus ada di requirements-backend.txt (mis. gunicorn>=21.2)
-#
-# Dipanggil lewat "python3 -m gunicorn", BUKAN "gunicorn" polos — pola yang
-# sama seperti masalah pip sebelumnya: binary-nya kadang tidak ke-link ke
-# PATH shell walau package-nya sudah ter-install dengan benar. "python3 -m"
-# selalu jalan selama modulnya berhasil ter-install di python yang aktif.
-cmd = "python3 -m gunicorn app:app --bind 0.0.0.0:$PORT"
+# Selalu pakai python & gunicorn dari /opt/venv yang sama dengan saat install,
+# BUKAN "python3"/"gunicorn" polos (itu yang bikin mismatch kemarin).
+cmd = "/opt/venv/bin/python -m gunicorn app:app --bind 0.0.0.0:$PORT"
