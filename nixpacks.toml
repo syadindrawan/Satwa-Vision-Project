@@ -1,16 +1,23 @@
 # nixpacks.toml
 # Konfigurasi eksplisit untuk Railway (Nixpacks), karena project ini
 # campuran Python (Flask/TensorFlow) + Node.js (Tailwind CLI build).
-# Tanpa file ini, Nixpacks kadang cuma mendeteksi salah satu (biasanya
-# Node, karena ada package.json) dan melewatkan `pip install`, sehingga
-# gunicorn & dependency Python lain tidak pernah ter-install.
+#
+# CATATAN: `pip` tidak otomatis ada di PATH hanya dengan menambahkan
+# paket "python310" — makanya kemarin muncul "pip: command not found".
+# Solusinya: selalu panggil lewat "python3 -m pip" (bukan "pip" polos),
+# itu dijamin ada selama python3-nya sendiri ada.
+#
+# GANTI "requirements.txt" di bawah kalau nama file kamu berbeda
+# (misalnya "requirements-backend.txt").
 
 [phases.setup]
 nixPkgs = ["python310", "nodejs_20"]
 
 [phases.install]
 cmds = [
-  "pip install -r requirements-backend.txt",
+  "python3 -m ensurepip --upgrade",
+  "python3 -m pip install --upgrade pip",
+  "python3 -m pip install -r requirements.txt",
   "npm install"
 ]
 
@@ -21,4 +28,4 @@ cmds = [
 
 [start]
 # $PORT disediakan otomatis oleh Railway saat runtime — JANGAN di-hardcode ke 5000
-cmd = "gunicorn app:app --bind 0.0.0.0:$PORT"
+cmd = "python3 -m gunicorn app:app --bind 0.0.0.0:$PORT"
